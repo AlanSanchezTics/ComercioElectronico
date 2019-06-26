@@ -1,81 +1,79 @@
 <!DOCTYPE html>
 <?php
-session_start();
+    include 'conexion.php';
+
+    if(isset($_POST["login"])){
+        if(isset($_POST["usuario"]) && isset($_POST["contraseña"])){
+            if(!(empty($_POST["usuario"]) && empty($_POST["contraseña"]))){
+                $user = $_POST["usuario"];
+                $pass = $_POST["contraseña"];
   
-  if(isset($_POST['usu']) && isset($_POST['pass'])){
-    if(empty($_POST['usu']) || empty($_POST['pass'])){
-      echo "hay uno o 2 vacios";
+                $db=$m->CRM_DB;
+                $colection = $db->usuarios;
+  
+                $usuario = array(
+                    'usuario' => $user,
+                    'password' => $pass,
+                    'tipo' => "CLIENTE"
+                );
+  
+                $result = $colection->find($usuario);
+                foreach ($result as $campo) {
+                    if(sizeof($campo) > 0){
+                        session_name("sessionWeb");
+                        session_start();
+                        $_SESSION["id"] = $campo["_id"];
+                        $_SESSION["nombre"] = $campo["nombre"];
+                        echo "<script type='text/javascript'>alert('Bienvenido ".$_SESSION["nombre"]."');</script>";
+                    }else{
+                        echo "<script type='text/javascript'>alert('Usuario inexistente');</script>";
+                    }
+                }
+            }else{
+                echo "<script type='text/javascript'>alert('Los campos no deben estar vacios');</script>";
+            }
+        }
     }else{
-      include 'conexion.php';
-      $isusu=0;
-      $ispass=0;
-$db=$m->CRM_DB;
-$usuarios= $db->usuarios;
-
-$squery = array('usuario' => $_POST['usu']);
-$data_book=$usuarios->find($squery);
-
-foreach($data_book as $b){
-$isusu=1;
-      }
-
-      if($isusu==1){
-        $squery = array('password' => $_POST['pass']);
-        $data_book=$usuarios->find($squery);
-
-        foreach($data_book as $b){
-          $ispass=1;
-          $nameuser=$b['nombre'];
-        }
-        if($ispass==1){
-          $_SESSION['log']=1;
-          echo "<script type='text/javascript'>alert('Loggeado Correctamente');</script>";
-        }else{
-          echo "<script type='text/javascript'>alert('La contraseña No Coincide');</script>";
-        }
-        
-      }else{
-        echo "<script type='text/javascript'>alert('Usuario no existente');</script>";
-      } 
-      
+        session_name("sessionWeb");
+        session_start();
     }
-  }
-  ?>
+?>
 <html lang="en">
-  <head>
-    <title>Sales Cellphones (Home)</title>
-    <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <link rel="stylesheet" type="text/css" href="css/estilo_general.css">  
-        <link rel="stylesheet" type="text/css" href="css/estilo_2.css">
+
+<head>
+  <title>Sales Cellphones (Home)</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="css/estilo_general.css">
+  <link rel="stylesheet" type="text/css" href="css/estilo_2.css">
 </head>
-        <body>
-                <div class="topnav">
-                        <a class="active" href="index.php"><b>INICIO</b></a>
-                        <a href="#about">Acerca de</a>
-                        <a href="#contact">Contacto</a>
-                        <a href="#contact">Registrate</a>
-                        <?php
-          if(isset($nameuser)){
-            echo "<a href='#'>Bienvenido ".$nameuser."</a>";
-            echo "<a class='ref' onclick='cerrarsesion()' id='nav_a'><b>Cerrar sesion</b></a>"; 
+
+<body>
+  <div class="topnav">
+    <a class="active" href="index.php"><b>INICIO</b></a>
+    <a href="./acerca_de.html">Acerca de</a>
+    <a href="./contacto.html">Contacto</a>
+    <?php
+          if(isset($_SESSION["id"])){
+            echo "<a href='#'>Bienvenido ".$_SESSION["nombre"]."</a>";
+            echo "<a class='ref' href='logout.php' id='nav_a'><b>Cerrar sesion</b></a>"; 
             
 
           }else{
-            echo "<a class='ref' href='#popupingresar' id='nav_a'><b>Iniciar sesion</b></a>";     
+            echo "<a class='ref' href='./registrousuario.html'>Registrate</a> <a class='ref' href='#popupingresar' id='nav_a'><b>Iniciar sesion</b></a>";     
 
           }
           
           
 
           ?>
-                        </div>
+  </div>
 
 
 
-<div class="container-description">
+  <div class="container-description">
 
-<?php
+    <?php
 
 include 'conexion.php';
 $db=$m->CRM_DB;
@@ -107,21 +105,21 @@ foreach($data_book as $b){
  }
 ?>
 
-<form style="padding-left: 16px;">
-        <h5> Seleccione Color: </h5>
-            <select id="color" name="tipocolor">
-            <option value="au">Blanco</option>
-            <option value="ca">Azul</option>
-            <option value="usa">Negro</option>
-            </select>
-          </form>
-          <form style="padding-left: 16px;">
-                <h5>Cantidad: </h5>
+    <form style="padding-left: 16px;">
+      <h5> Seleccione Color: </h5>
+      <select id="color" name="tipocolor">
+        <option value="au">Blanco</option>
+        <option value="ca">Azul</option>
+        <option value="usa">Negro</option>
+      </select>
+    </form>
+    <form action="Agregar.php" method="POST"  style="padding-left: 16px;">
+    <input type="hidden" name="clave" value="<?php echo $_GET["id"]; ?>">
+      <h5>Cantidad: </h5>
 
 
-                    <select id="cantidad" name="cantprod">
-                    <option value='0'> Seleccione </option>
-                    <?php
+      <select id="cantidad" name="cantprod">
+        <?php
 
 
 $squery = array('clave' => $_GET['id']);
@@ -137,101 +135,120 @@ while($i<=$b['stock']){
 
                     
                    ?>
-                    </select>
+      </select>
 
 
-                  </form>
-                  <div style="width: 100%;padding-top: 64px; ">
-                        <button id="btn-compra"><img style="height: 32px; width: 32px;" src="recursos/paper-bag.png" alt="Comprar"><br>Comprar</button>
-                        <button id="btn-carrito"><img style="height: 32px; width: 32px;" src="recursos/shopping-cart.png" alt="Agregar al carrito"><br>Agregar</button>
-                    </div>
+    <div style="width: 100%;padding-top: 64px; ">
+      <button type="submit" id="btn-carrito" style="width: 90%;"><img style="height: 32px; width: 32px;" src="recursos/shopping-cart.png"
+          alt="Agregar al carrito"><br>Agregar al carrito</button>
     </div>
-            </div>
+  </form>
+  </div>
+  </div>
 
-     </div>
+  </div>
 
-     <div class="btn-carrito">
-         <a href="#popup"><button><img src="recursos/shopping-cart.png" alt="Carrito de compra"> <div>2</div></button></a>
-        </div>
+  <?php
+  if(isset($_SESSION["id"]) && !empty($_SESSION["id"])){
+    $db=$m->CRM_DB;
+    $colection = $db->usuarios;
+
+    $usuario = array(
+      "_id" => $_SESSION["id"]
+    );
+    $result = $colection->find($usuario);
+    foreach ($result as $campo) {
+      $totalArt = sizeof($campo["carrito"]["productos"]);
+      $productos = $campo["carrito"]["productos"];
+      $total = $campo["carrito"]["total"];
+    }
+    echo '
+    <div class="btn-carrito">
+      <a href="#popup"><button><img src="recursos/shopping-cart.png" alt="Carrito de compra">
+          <div>'.$totalArt.'</div>
+        </button></a>
+    </div>
+    ';
+  }
+?>
 
 <div class="modal-wrapper" id="popup">
-    <div class="popup-contenedor">
-       <div class="header-carrito"><img style="height: 32px; width: 32px;" src="recursos/shopping-cart.png" alt="carrito de compra"></div>
-       <div class="scroll-campo">
+  <div class="popup-contenedor">
+    <div class="header-carrito"><img style="height: 32px; width: 32px;" src="recursos/shopping-cart.png"
+        alt="carrito de compra"></div>
+    <div class="scroll-campo">
+      <?php
+        if(isset($productos)){
+          $colection = $db->productos;
 
-
-           <div class="card-scroll">
-                <img style="height: 80px; width: 100px;" src="recursos/lg_g7.jpg" alt="xx">
-                <span style="padding-left: 16px; font-size: 32px;">Nombre del producto</span>
+          foreach ($productos as $campo) {
+            $produto = array(
+              '_id' => $campo["_id"]
+            );
+            $result = $colection->find($produto);
+            foreach ($result as $values) {
+              echo '
+              <div class="card-scroll">
+                <img style="height: 80px; width: 100px;" src="'.$values['url'].'" alt="xx">
+                <span style="padding-left: 16px; font-size: 32px;">'.$values['descripcion'].'</span>
                 <p>Color: blanco</p>
-                <span>Cantidad: 1</span>
-                <span style="float: right; font-size: 24px;">$ 200.00</span>
-           </div>
-
-
-
-           <div class="card-scroll">
-                <img style="height: 80px; width: 100px;" src="recursos/samsung_x.jpg" alt="xx">
-                <span style="padding-left: 16px; font-size: 32px;">Nombre del producto</span>
-                <p>Color: blanco</p>
-                <span>Cantidad: 1</span>
-                <span style="float: right; font-size: 24px;">$ 200.00</span>
-           </div>
-
-       </div> 
-       <div style="float: right; position:relative; right: 0px; bottom: 0px; width: 300px;">
-            <h2>Tipo de pago: </h2>
-        <select id="pago" name="tipopago">
-                <option value="cr">Tarjeta de credito</option>
-                <option value="db">Tarjeta de debito</option>
-                <option value="ca">Efectivo</option>
-                </select>
-            </div>
-       <div style="padding: 16px">
-            <table>
-                <tr>
-                    <td>Productos (2): </td>
-                    <td>$ 350.00 </td>
-                </tr>
-                <tr>
-                    <td>Envio: </td>
-                    <td>$ 50.00 </td>
-                </tr>
-                <tr>
-                    <td>Impuesto: </td>
-                    <td> $ 10.00 </td>
-                </tr>
-                <tr>
-                    <td><h2>Total: </h2></td> 
-                    <td><h2> $ 410.00 </h2></td>
-                </tr>
-            </table>
-            <button class="popup-button" >Comprar</button>
-        </div>
-        <a class="popup-cerrar" href="#">x</a>
+                <span>Cantidad: '.$campo['cantidad'].'</span>
+                <span style="float: right; font-size: 24px;">$'.$campo['subtotal'].'</span>
+              </div>';
+            }
+          }
+        }
+      ?>
     </div>
+    <div style="padding: 16px">
+      <table>
+        <tr>
+          <td>Productos (<?php echo $totalArt; ?>): </td>
+          <td>$ <?php echo $total; ?> </td>
+        </tr>
+        <tr>
+          <td>Envio: </td>
+          <td>$ 200.00 </td>
+        </tr>
+        <tr>
+          <td>Impuesto: </td>
+          <td> $ <?php echo ($total * 0.16);?> </td>
+        </tr>
+        <tr>
+          <td>
+            <h2>Total: </h2>
+          </td>
+          <td>
+            <h2> $ <?php echo (($total * 1.16)+200); ?> </h2>
+          </td>
+        </tr>
+      </table>
+      <button onclick="window.location = './formulariopago.php'" class="popup-button">Comprar</button>
+    </div>
+    <a class="popup-cerrar" href="#">x</a>
+  </div>
 </div>
 
+  <div class="modal-wrapper" id="popupingresar">
+    <div class="popupingresar-contenedor">
+      <h2>Iniciar sesion</h2>
+      <div class=""><img style="height: 32px; width: 32px;" src="imagenes/login.png" alt="Inicio de sesion"></div>
 
-<div class="modal-wrapper" id="popupingresar">
-            <div class="popupingresar-contenedor">
-              <h2>Iniciar sesion</h2> 
-              <div class=""><img style="height: 32px; width: 32px;" src="imagenes/login.png" alt="Inicio de sesion"></div>
-               
-              
-        <form method="POST" action="index.php" style="width: 100%">
-          <h3>Correo o usuario</h3>
-          <input name="usu" type="text" style="width: 70%">
-          <h3>Contraseña</h3>
-          <input type="password" name="pass" style="width: 70%">
-        
+
+      <form method="POST" action="index.php" style="width: 100%">
+        <input type="hidden" name="login">
+        <h3>Correo o usuario</h3>
+        <input name="usu" type="text" style="width: 70%">
+        <h3>Contraseña</h3>
+        <input type="password" name="pass" style="width: 70%">
+
         <br><br>
-                  
-                    <input class="popup-button" type="submit" value="Ingresar"></button>
-                    </form>
-                </div>
-                <a class="popup-cerrar" href="#">x</a>
-            </div>
+
+        <input class="popup-button" type="submit" value="Ingresar"></button>
+      </form>
+    </div>
+    <a class="popup-cerrar" href="#">x</a>
+  </div>
 
 
 
@@ -243,7 +260,8 @@ while($i<=$b['stock']){
 
 
 
-</div>
+  </div>
 
-        </body>
-        </html>
+</body>
+
+</html>
