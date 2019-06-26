@@ -1,0 +1,122 @@
+.descrip-producto{
+    height: 100%; 
+    width: 90%; 
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0px 8px 8px 8px rgba(0, 0, 0, 0.5);
+}
+.container-description{
+    height: 1100px;
+    width: 100%;
+    margin-top: 150px; 
+    margin-bottom: 0px;
+    display: inline-block;
+}
+.imag-container{
+    height: 100%;
+    width: 70%;
+    background-color: rgb(226, 226, 226);
+    float: left;
+    border-style: solid;
+    border-color: black;
+    
+}
+.imag-container img{
+    height: 30%;
+    width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 64px;
+    display:block; 
+    border-radius: 10px;
+    border-style: solid;
+    border-color: #29353D;
+    box-shadow: 0px 8px 8px 4px rgba(0, 0, 0, 0.5);
+}
+.pagos-container {
+    background-color: rgb(226, 226, 226);
+    float:right;
+    height: 55%;
+    width: 29%;
+    position: sticky;   
+   top: 60px;
+}
+.contenido-pagos-container{
+width: 50%;
+margin-left: 16px;
+}
+.pagos-container button {
+margin-left: 16px;
+background-color: rgb(130, 192, 255);
+border-style: solid;
+border-color: #29353D;
+border-radius: 5px;
+height: 64px;
+width: 150px;
+box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.9);
+color: black;
+}
+select {
+width: 80%;
+padding: 8px 12px;
+border-color: #29353D;
+border-radius: 8px;
+background-color: rgb(128, 128, 128);
+border-style: solid;
+border-width: 2px;
+color: white;
+box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.9);
+}
+.container-carac{
+padding-left: 32px;
+border-top-style: solid;
+border-bottom-style: solid;
+border-color: #29353D;
+margin-top: 32px; 
+
+}
+.descripcion-{
+margin-right: 32px;
+margin-left: 32px;
+text-align: justify;
+}
+.btn-carrito{
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    height: 200px;
+    width: 100px;
+    float: left;
+    
+}
+.btn-carrito img {
+    height: 32px;
+    width: 32px;
+
+}
+.btn-carrito button {
+    position: absolute;
+    border-radius: 100%;
+    border: none;
+    background-color: rgb(130, 192, 255);
+    height: 70px;
+    width: 70px;
+    bottom: 0px;
+    right: 0px;
+    margin-left: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0px 4px 4px 2px rgb(0, 0, 0, 0.9);
+}
+.btn-carrito button div {
+    position: absolute;
+    box-shadow: 0px 2px 2px 1px rgba(0, 0, 0, 0.5);
+    height: 24px;
+    width: 32px;
+    border-radius: 100%;
+    border: none;
+    top: -8px;
+    right: -8px;
+    background-color: #29353D;
+    color: white;
+    padding-top: 10px; 
+}
