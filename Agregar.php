@@ -14,8 +14,8 @@
             $stock = $campo["stock"];
             $articulo = array(
                 '_id' => $id,
-                'cantidad' => $cantidad,
-                'subtotal' => ($costo*$cantidad)
+                'cantidad' => (int)$cantidad,
+                'subtotal' => (int)($costo*$cantidad)
             );
         }
         session_name("sessionWeb");
@@ -35,7 +35,7 @@
         $result=$colection->updateOne(
             $usuario,['$set' =>[
                 'carrito'=>[
-                    'total' => $total,
+                    'total' => (int)$total,
                     'productos' => $carrito
                     ]
                 ]
