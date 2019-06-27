@@ -65,7 +65,7 @@
             
 
           }else{
-            echo "<a class='ref' href='./registrousuario.html'>Registrate</a><a class='ref' href='#popupingresar' id='nav_a'><b>Iniciar sesion</b></a>";     
+            echo "<a class='ref' href='./registrousuario.php'>Registrate</a><a class='ref' href='#popupingresar' id='nav_a'><b>Iniciar sesion</b></a>";     
 
           }
           

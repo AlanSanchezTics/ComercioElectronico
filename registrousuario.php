@@ -1,3 +1,49 @@
+<?php
+        if(isset($_POST["registro"])){
+                $usuario = $_POST["usuario"];
+                $password = $_POST["password"];
+                $nombre = $_POST["nombre"];
+                $apellidos = $_POST["apellidos"];
+                $edad = $_POST["edad"];
+                $telefono = $_POST["telefono"];
+                $direccion = array(
+                        'alias' => "DEFAULT",
+                        'estado' => $_POST["estado"],
+                        'municipio' => $_POST["municipio"],
+                        'colonia' => $_POST["colonia"],
+                        'calle' => $_POST["calle"]." ".$_POST["numero"],
+                        'cp' => (int)$_POST["cp"]
+                );
+
+                include 'conexion.php';
+
+                $db=$m->CRM_DB;
+                $colection = $db->usuarios;
+                $user = array(
+                        'usuario' =>$usuario
+                );
+                $result = $colection -> find($user);
+                foreach ($result as $campo) {
+                        echo "<script type='text/javascript'>alert('El usuario ya existe');</script>";
+                        exit;
+                }
+                $inputUsuario = array(
+                        'carrito' =>array(
+                                'total' => (int)0,
+                                'productos' => array()),
+                        'direcciones' => $direccion,
+                        'usuario' => $usuario,
+                        'password' => $password,
+                        'tipo' => 'CLIENTE',
+                        'nombre' =>$nombre,
+                        'apellido' => $apellidos,
+                        'edad' => (int)$edad,
+                        'telefono' => $telefono
+                );
+                $result = $colection -> insertOne($inputUsuario);
+                echo "<script type='text/javascript'>alert('Usuario Registrado con exito.');window.location = 'index.php';</script>";
+        }
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -17,12 +63,13 @@
                         <h2 style="padding-top:10%;width: 100%;text-align: center;" >Ingresa tus datos</h2>
         <div style="padding:32px;margin-left: auto;margin-right: auto; box-shadow: 2px 4px 4px 2px rgba(0, 0, 0, 0.8); width: 30%; height: 50%; margin-bottom: 64px;">
                         <form action="registrousuario.php" method="POST">
-                                <h4>Usuario: </h4><input name="user" type="text" style="width: 100%;">
-                                <h4>Contraseña:</h4> <input name="pass" type="password" style="width: 100%;">
+                                <input type="hidden" name="registro">
+                                <h4>Usuario: </h4><input name="usuario" type="text" style="width: 100%;">
+                                <h4>Contraseña:</h4> <input name="password" type="password" style="width: 100%;">
                                 <h4>Nombre: </h4><input name="nombre" type="text" style="width: 100%;">
                                 <h4>Apellidos: </h4><input name="apellidos" type="text" style="width: 100%;">
-                                <h4>Edad: </h4> <input name="age" type="text" style="width: 100%;">
-                                <h4>Telefono: </h4> <input name="tel" type="tel" style="width: 100%;">
+                                <h4>Edad: </h4> <input name="edad" type="text" style="width: 100%;">
+                                <h4>Telefono: </h4> <input name="telefono" type="tel" style="width: 100%;">
                                 <h4>Direccion: </h4>
                                 <h5>Estado: </h5><input name="estado" type="text" style="width: 100%;">
                                 <h5>Municipio: </h5><input name="municipio" type="text" style="width: 100%;">

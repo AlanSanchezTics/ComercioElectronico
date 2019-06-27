@@ -55,12 +55,12 @@
     <a href="./contacto.html">Contacto</a>
     <?php
           if(isset($_SESSION["id"])){
-            echo "<a href='#'>Bienvenido ".$_SESSION["nombre"]."</a>";
+            echo "<a href='#'>hola ".$_SESSION["nombre"]."</a>";
             echo "<a class='ref' href='logout.php' id='nav_a'><b>Cerrar sesion</b></a>"; 
             
 
           }else{
-            echo "<a class='ref' href='./registrousuario.html'>Registrate</a> <a class='ref' href='#popupingresar' id='nav_a'><b>Iniciar sesion</b></a>";     
+            echo "<a class='ref' href='./registrousuario.php'>Registrate</a> <a class='ref' href='#popupingresar' id='nav_a'><b>Iniciar sesion</b></a>";     
 
           }
           

@@ -25,7 +25,7 @@
             foreach ($result as $key) {
                 $stock = $key["stock"];
             }
-            if($cantidad < $stock){
+            if($cantidad <= $stock){
                 $colection->updateOne(
                     $idprod,['$set' =>[
                         'stock'=> (int)($stock-$cantidad)
